@@ -35,9 +35,12 @@ public class PlayerJoin implements Listener {
                     return;
                 }
 
+                plugin.getSkinStorage().removeSkinData(e.getPlayer().getName());
+
                 String skin = plugin.getSkinStorage().getDefaultSkinNameIfEnabled(e.getPlayer().getName());
 
-                SkinsRestorer.getInstance().getFactory().applySkin(e.getPlayer(), plugin.getSkinStorage().getOrCreateSkinForPlayer(skin));
+                if (!skin.equals(e.getPlayer().getName()))
+                    SkinsRestorer.getInstance().getFactory().applySkin(e.getPlayer(), plugin.getSkinStorage().getOrCreateSkinForPlayer(skin));
             } catch (SkinRequestException ignored) {
             }
         });

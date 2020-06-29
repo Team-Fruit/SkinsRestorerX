@@ -46,6 +46,16 @@ public class MojangAPI {
      * @return Property object (New Mojang, Old Mojang or Bungee)
      **/
     public Object getSkinProperty(String uuid, boolean tryNext) {
+        return getSkinPropertyMojang(uuid, tryNext);
+    }
+
+    public Object getSkinProperty(String uuid) {
+        return getSkinPropertyMojang(uuid, true);
+    }
+
+    public Object getSkinPropertyMineTools(String uuid, boolean tryNext) {
+        this.logger.log("Trying MineTools API to get skin property for " + uuid + ".");
+
         String output;
         try {
             output = readURL(skinurl.replace("%uuid%", uuid));
@@ -70,18 +80,16 @@ public class MojangAPI {
 
         } catch (Exception e) {
             if (tryNext)
-                return getSkinPropertyMojang(uuid);
+                return getSkinPropertyBackup(uuid);
         }
         return null;
     }
 
-    public Object getSkinProperty(String uuid) {
-        return getSkinProperty(uuid, true);
+    public Object getSkinPropertyMineTools(String uuid) {
+        return getSkinPropertyMineTools(uuid, true);
     }
 
     public Object getSkinPropertyMojang(String uuid, boolean tryNext) {
-        this.logger.log("Trying Mojang API to get skin property for " + uuid + ".");
-
         String output;
         try {
             output = readURL(skinurl_mojang.replace("%uuid%", uuid));
@@ -98,7 +106,7 @@ public class MojangAPI {
 
         } catch (Exception e) {
             if (tryNext)
-                return getSkinPropertyBackup(uuid);
+                return getSkinPropertyMineTools(uuid);
         }
         return null;
     }
